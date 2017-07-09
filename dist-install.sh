@@ -23,7 +23,7 @@ else
 	sysconfdir="$1"
 fi
 
-install -oroot -groot -m644 sysconfig.btrfsmaintenance "$sysconfdir"/btrfsmaintenance
+install -b -oroot -groot -m644 sysconfig.btrfsmaintenance "$sysconfdir"/btrfsmaintenance
 install -d -oroot -groot -m755 /usr/share/btrfsmaintenance
 install -oroot -groot -m755 btrfs-*.sh /usr/share/btrfsmaintenance/
 install -oroot -groot -m644 btrfsmaintenance-functions /usr/share/btrfsmaintenance/

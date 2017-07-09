@@ -56,3 +56,4 @@ refresh_period "$BTRFS_SCRUB_PERIOD" btrfs-scrub.sh
 refresh_period "$BTRFS_DEFRAG_PERIOD" btrfs-defrag.sh
 refresh_period "$BTRFS_BALANCE_PERIOD" btrfs-balance.sh
 refresh_period "$BTRFS_TRIM_PERIOD" btrfs-trim.sh
+refresh_period "$BTRFS_DEDUPE_PERIOD" btrfs-dedupe.sh
