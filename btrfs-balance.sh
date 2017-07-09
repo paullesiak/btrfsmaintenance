@@ -28,17 +28,19 @@ OIFS="$IFS"
 IFS=:
 exec 2>&1 # redirect stderr to stdout to catch all output to log destination
 for MM in $BTRFS_BALANCE_MOUNTPOINTS; do
+        hr
 	IFS="$OIFS"
 	if [ $(stat -f --format=%T "$MM") != "btrfs" ]; then
 		echo "Path $MM is not btrfs, skipping"
 		continue
 	fi
 	echo "Before balance of $MM"
-	btrfs filesystem df "$MM"
-	df -H "$MM"
+	btrfs filesystem df "$MM" | indent
+	df -H "$MM" | indent
+        echo "Running balance on $MM"
 
 	if detect_mixed_bg "$MM"; then
-		btrfs balance start -musage=0 -dusage=0 "$MM"
+		btrfs balance start -musage=0 -dusage=0 "$MM" | indent
 		# we use the MUSAGE values for both, supposedly less aggressive
 		# values, but as the data and metadata space is shared on
 		# mixed-bg this does not lead to the situations we want to
@@ -46,24 +48,24 @@ for MM in $BTRFS_BALANCE_MOUNTPOINTS; do
 		# blockgroups)
 		for BB in $BTRFS_BALANCE_MUSAGE; do
 			# quick round to clean up the unused block groups
-			btrfs balance start -v -musage=$BB -dusage=$BB "$MM"
+			btrfs balance start -v -musage=$BB -dusage=$BB "$MM" | indent
 		done
 	else
-		btrfs balance start -dusage=0 "$MM"
+		btrfs balance start -dusage=0 "$MM" | indent
 		for BB in $BTRFS_BALANCE_DUSAGE; do
 			# quick round to clean up the unused block groups
-			btrfs balance start -v -dusage=$BB "$MM"
+			btrfs balance start -v -dusage=$BB "$MM" | indent
 		done
-		btrfs balance start -musage=0 "$MM"
+		btrfs balance start -musage=0 "$MM" | indent
 		for BB in $BTRFS_BALANCE_MUSAGE; do
 			# quick round to clean up the unused block groups
-			btrfs balance start -v -musage="$BB" "$MM"
+			btrfs balance start -v -musage="$BB" "$MM" | indent
 		done
 	fi
 
 	echo "After balance of $MM"
-	btrfs filesystem df "$MM"
-	df -H "$MM"
+	btrfs filesystem df "$MM" | indent
+	df -H "$MM" | indent
 done
 
 } | \

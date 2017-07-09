@@ -3,6 +3,14 @@
 # this file contains common code for the btrfs maintenance scripts
 #
 
+# indent output
+indent() { sed 's/^/    /'; }
+
+# print horizontal row
+hr() {
+	echo '=============================================================='
+}
+
 # function: evaluate_auto_mountpoint
 # parameter: A variable name
 #

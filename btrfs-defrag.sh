@@ -20,19 +20,21 @@ if [ -f /etc/default/btrfsmaintenance ] ; then
 fi
 
 LOGIDENTIFIER='btrfs-defrag'
+. $(dirname $(realpath $0))/btrfsmaintenance-functions
 
 {
 OIFS="$IFS"
 IFS=:
 exec 2>&1 # redirect stderr to stdout to catch all output to log destination
 for P in $BTRFS_DEFRAG_PATHS; do
+        hr
 	IFS="$OIFS"
 	if [ $(stat -f --format=%T "$P") != "btrfs" ]; then
 		echo "Path $P is not btrfs, skipping"
 		continue
 	fi
 	find "$P" -xdev -size "$BTRFS_DEFRAG_MIN_SIZE" -type f \
-		-exec btrfs filesystem defrag -t 32m -f $BTRFS_VERBOSITY '{}' \;
+		-exec btrfs filesystem defrag -t 32m -f $BTRFS_VERBOSITY '{}' \; | indent
 done
 
 } | \
