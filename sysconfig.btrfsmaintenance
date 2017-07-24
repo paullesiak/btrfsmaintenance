@@ -122,3 +122,6 @@ BTRFS_TRIM_PERIOD="none"
 # (Colon separated paths)
 # The special word/mountpoint "auto" will evaluate all mounted btrfs filesystems at runtime
 BTRFS_TRIM_MOUNTPOINTS="/"
+
+BTRFS_DEDUPE_PERIOD="monthly"
+
