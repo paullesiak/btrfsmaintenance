@@ -1,12 +1,7 @@
 #!/bin/sh
 #
-# Copyright (c) 2014 SuSE Linux AG, Nuernberg, Germany.
-#
-# please send bugfixes or comments to http://www.suse.de/feedback.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 
-#
-# paranoia settings
-#
 umask 022
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
@@ -20,7 +15,7 @@ if [ -f /etc/default/btrfsmaintenance ] ; then
 fi
 
 LOGIDENTIFIER='btrfs-defrag'
-. $(dirname $(realpath $0))/btrfsmaintenance-functions
+. $(dirname $(realpath "$0"))/btrfsmaintenance-functions
 
 {
 OIFS="$IFS"
@@ -29,7 +24,7 @@ exec 2>&1 # redirect stderr to stdout to catch all output to log destination
 for P in $BTRFS_DEFRAG_PATHS; do
         hr
 	IFS="$OIFS"
-	if [ $(stat -f --format=%T "$P") != "btrfs" ]; then
+	if ! is_btrfs "$P"; then
 		echo "Path $P is not btrfs, skipping"
 		continue
 	fi

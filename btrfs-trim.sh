@@ -1,12 +1,7 @@
 #!/bin/sh
 #
-# Copyright (c) 2014 SuSE Linux AG, Nuernberg, Germany.
-#
-# please send bugfixes or comments to http://www.suse.de/feedback.
+# Copyright (c) 2018 SUSE LINUX GmbH, Nuernberg, Germany.
 
-#
-# paranoia settings
-#
 umask 022
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
@@ -20,22 +15,22 @@ if [ -f /etc/default/btrfsmaintenance ] ; then
 fi
 
 LOGIDENTIFIER='btrfs-trim'
-. $(dirname $(realpath $0))/btrfsmaintenance-functions
+. $(dirname $(realpath "$0"))/btrfsmaintenance-functions
 
 {
-evaluate_auto_mountpoint BTRFS_TRIM_MOUNTPOINTS
+BTRFS_TRIM_MOUNTPOINTS=$(expand_auto_mountpoint "$BTRFS_TRIM_MOUNTPOINTS")
 OIFS="$IFS"
 IFS=:
 exec 2>&1 # redirect stderr to stdout to catch all output to log destination
 for MNT in $BTRFS_TRIM_MOUNTPOINTS; do
         hr
 	IFS="$OIFS"
-	if [ $(stat -f --format=%T "$MNT") != "btrfs" ]; then
+	if ! is_btrfs "$MNT"; then
 		echo "Path $MNT is not btrfs, skipping"
 		continue
 	fi
 	echo "Running fstrim on $MNT"
-	fstrim "$MNT" | indent
+	fstrim --verbose "$MNT" | indent
 done
 
 } | \

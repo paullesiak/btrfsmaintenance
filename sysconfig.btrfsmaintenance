@@ -10,7 +10,9 @@ BTRFS_LOG_OUTPUT="stdout"
 ## Type:        string
 ## Default:     ""
 #
-# Run periodic defrag on selected paths.
+# Run periodic defrag on selected paths. The files from a given path do not
+# cross mount points or other subvolumes/snapshots. If you want to defragment
+# nested subvolumes, all have to be listed in this variable.
 # (Colon separated paths)
 BTRFS_DEFRAG_PATHS=""
 
@@ -36,7 +38,8 @@ BTRFS_DEFRAG_MIN_SIZE="+1M"
 # Which mountpoints/filesystems to balance periodically. This may reclaim unused
 # portions of the filesystem and make the rest more compact.
 # (Colon separated paths)
-# The special word/mountpoint "auto" will evaluate all mounted btrfs filesystems at runtime
+# The special word/mountpoint "auto" will evaluate all mounted btrfs
+# filesystems
 BTRFS_BALANCE_MOUNTPOINTS="/"
 
 ## Path:           System/File systems/btrfs
@@ -76,7 +79,8 @@ BTRFS_BALANCE_MUSAGE="1 5 10 20 30"
 #
 # Which mountpoints/filesystems to scrub periodically.
 # (Colon separated paths)
-# The special word/mountpoint "auto" will evaluate all mounted btrfs filesystems at runtime
+# The special word/mountpoint "auto" will evaluate all mounted btrfs
+# filesystems
 BTRFS_SCRUB_MOUNTPOINTS="/"
 
 ## Path:        System/File systems/btrfs
@@ -120,7 +124,8 @@ BTRFS_TRIM_PERIOD="none"
 #
 # Which mountpoints/filesystems to trim periodically.
 # (Colon separated paths)
-# The special word/mountpoint "auto" will evaluate all mounted btrfs filesystems at runtime
+# The special word/mountpoint "auto" will evaluate all mounted btrfs
+# filesystems
 BTRFS_TRIM_MOUNTPOINTS="/"
 
 BTRFS_DEDUPE_PERIOD="monthly"
